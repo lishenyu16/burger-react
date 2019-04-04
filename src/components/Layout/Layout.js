@@ -1,24 +1,35 @@
-import React from 'react'
+import React ,{Component} from 'react'
 import styles from './Layout.module.css'
-const layout = ( props ) =>{
-    return(
-        <main className={styles.Content}>
-            {props.children}
-        </main>
-    )
+import Toolbar from '../Navigation/Toolbar/Toolbar'
+import SideDrawer from '../Navigation/SideDrawer/SideDrawer'
+
+class Layout extends Component {
+    state={
+        showSideDrawer : true
+    }
+
+    sideDrawerClosed= ()=>{
+        this.setState({showSideDrawer:false})
+    }
+
+    sideDrawerToggleHandler=()=>{
+        this.setState((preState)=>{
+            return {showSideDrawer : !preState.showSideDrawer}
+        })
+    }
+
+    render(){
+        return(
+            <React.Fragment>
+                <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler}></Toolbar>
+                <SideDrawer show={this.state.showSideDrawer} sideDrawerClicked={this.sideDrawerClosed}></SideDrawer>
+                <main className={styles.Content}>
+                    {this.props.children}
+                </main>
+            </React.Fragment>
+        )
+    }
+
 }
 
-export default layout
-
-//alternative way of above, note the '(' instead of '{'
-//When you use the (  (parenthesis),
-//the return statement is not displayed,  but it's still active.
-
-// const layout = ( props ) =>()
-//     <Aux>
-//         <div></div>
-//         <main>
-//             {props.children}
-//         </main>
-//     </Aux>
-// )
+export default Layout
