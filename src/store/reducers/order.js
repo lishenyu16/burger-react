@@ -35,6 +35,11 @@ const reducer = (state=initialState, action)=>{
                 loading: false,
                 ...state
             }
+        case(acitonTypes.fetchOrders):
+            return {
+                ...state,
+                orders: action.orders
+            }
         default:
             return state
     }

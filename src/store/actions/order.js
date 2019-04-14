@@ -43,8 +43,25 @@ export const purchaseInit = ()=>{
     }
 }
 
-export const fetchOrderInit = ()=>{
+export const  fetchOrders= (orders)=>{
     return {
-        type: actionTypes.fetchOrderInit
+        type: actionTypes.fetchOrders,
+        orders
+    }
+}
+export const fetchOrderInit = ()=>{
+    return dispatch=>{
+        axios.get('https://aburgerbuilder.firebaseio.com/orders.json')
+        .then(res=>{
+            const fetchedOrders =[]
+            for(let key in res.data){
+                const order ={
+                    id:key,
+                    ...res.data[key]
+                }
+                fetchedOrders.push(order)
+            }
+            dispatch(fetchOrders(fetchedOrders))
+        })  
     }
 }

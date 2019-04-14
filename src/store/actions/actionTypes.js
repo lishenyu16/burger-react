@@ -11,3 +11,5 @@ export const startingPurchase = "startingPurchase"
 export const purchaseInit = 'purchaseInit'
 
 export const fetchOrderInit = 'fetchOrderInit'
+
+export const fetchOrders = 'fetchOrders'
