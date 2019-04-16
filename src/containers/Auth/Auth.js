@@ -1,159 +1,167 @@
 import React, { Component } from 'react'
-import FormValidator from '../../containers/FormValidator/FormValidator'
+import Input from '../../components/UI/Input/Input'
+import isEmail from 'validator/lib/isEmail';
+import styles from './Auth.module.css'
+import {FormErrors} from './FormErrors'
+import {connect} from 'react-redux'
+import * as actions from '../../store/actions/index'
 class Auth extends Component {
 
-    constructor() {
-        super();
-    
-        this.validator = new FormValidator([
-          { 
-            field: 'email', 
-            method: 'isEmpty', 
-            validWhen: false, 
-            message: 'Email is required.' 
-          },
-          { 
-            field: 'email',
-            method: 'isEmail', 
-            validWhen: true, 
-            message: 'That is not a valid email.'
-          },
-          { 
-            field: 'phone', 
-            method: 'isEmpty', 
-            validWhen: false, 
-            message: 'Pleave provide a phone number.'
-          },
-        //   {
-        //     field: 'phone', 
-        //     method: 'matches',
-        //     args: [/^\(?\d\d\d\)? ?\d\d\d-?\d\d\d\d$/], // args is an optional array of arguements that will be passed to the validation method
-        //     validWhen: true, 
-        //     message: 'That is not a valid phone number.'
-        //   },
-          { 
-            field: 'password', 
-            method: 'isEmpty', 
-            validWhen: false, 
-            message: 'Password is required.'
-          },
-          { 
-            field: 'password_confirmation', 
-            method: 'isEmpty', 
-            validWhen: false, 
-            message: 'Password confirmation is required.'
-          },
-          { 
-            field: 'password_confirmation', 
-            method: this.passwordMatch,   // notice that we are passing a custom function here
-            validWhen: true, 
-            message: 'Password and password confirmation do not match.'
-          }
-        ]);
-        state={
-            name:'',
-            email:'',
-            street:'',
-            zip:''
-            // email: '',
-            // phone: '',
-            // password: '',
-            // password_confirmation: '',
-            // validation: this.validator.valid(),
-        }
+    state={
+        name:'',
+        email: '',
+        password: '',
+        confirmation: '',
+        formErrors: {name: '', email: '', password: '', confirmation: ''},
+        nameValid:false,
+        emailValid: false,
+        passwordValid: false,
+        confirmationValid: false,
+        signUpFormValid: false,
+        signInFormValid: false,
+        isSignup: true,
+        isSignin: false,
     }
-
-    passwordMatch = (confirmation, state) =>{
-        return state.password === confirmation
-    } 
-    handleInputChange = event => {
-        event.preventDefault();
-    
+    handleInputChange = (event,target) => { 
+        this.setState(
+            {
+                [event.target.name]: event.target.value,
+            })
+        this.validateField(target, event.target.value)
+    }
+    validateField = (fieldName, value) => {
+        let fieldValidationErrors = this.state.formErrors;
+        let nameValid = this.state.nameValid;
+        let emailValid = this.state.emailValid;
+        let passwordValid = this.state.passwordValid;
+        let confirmationValid = this.state.confirmationValid;
+      
+        switch(fieldName) {
+          case 'name':
+            nameValid = value.length >= 3 && value.length <= 12;
+            fieldValidationErrors.name = nameValid ? '' : ' length range should be between 3~12';
+            break;
+          case 'email':
+            emailValid = isEmail(value.trim()) // value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+            fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+            break;
+          case 'password':
+            passwordValid = value.length >= 6 && value.length <= 12;
+            fieldValidationErrors.password = passwordValid ? '': ' length range should be between 6~12';
+            break;
+          case 'confirmation':
+            confirmationValid = value===this.state.password;
+            fieldValidationErrors.confirmation = confirmationValid ? '': ' not match password!';
+            break;
+          default:
+            break;
+        }
+        let signUpFormValid = nameValid && emailValid && passwordValid && confirmationValid
+        let signInFormValid = emailValid && passwordValid
+        this.setState(
+            {
+                formErrors: fieldValidationErrors,
+                nameValid: nameValid,
+                emailValid: emailValid,
+                passwordValid: passwordValid,
+                confirmationValid: confirmationValid,
+                signUpFormValid: signUpFormValid,
+                signInFormValid: signInFormValid
+            }
+        );
+    }
+      
+    // validateForm=()=> {
+    //     this.setState({signUpFormValid: this.state.nameValid && this.state.emailValid && this.state.passwordValid && this.state.confirmationValid});
+    // }
+    handleFormSubmit=(event)=>{
+        event.preventDefault()
+        if(this.state.isSignin){
+            this.props.onSignIn(this.state.email,this.state.password)
+        }
+        if(this.state.isSignup){
+            this.props.onSignUp(this.state.email,this.state.password)
+        }
+        
+    }
+    switchSignup=()=>{
         this.setState({
-          [event.target.name]: event.target.value,
-        });
+            isSignin:false,
+            isSignup:true
+        })
     }
-    handleFormSubmit = event => {
-        event.preventDefault();
-    
-        const validation = this.validator.validate(this.state);
-        this.setState({ validation });
-        this.submitted = true;
-    
-        if (validation.isValid) {
-          // handle actual form submission here
-        }
+    switchSignin=()=>{
+        this.setState({
+            isSignin:true,
+            isSignup:false
+        })
     }
 
-    render(){
-        let validation = this.submitted ?                         // if the form has been submitted at least once
-                      this.validator.validate(this.state) :   // then check validity every time we render
-                      this.state.validation            
-        return (
-            <div className={styles.ContactData}>
-                <h4>Enter your personal info: </h4>
-                <form className="demoForm">
-                    <h2>Sign up</h2>
-
-                    <div className={validation.email.isInvalid && 'has-error'}>
-                    <label htmlFor="email">Email address</label>
-                    <input type="email" className="form-control"
-                        name="email"
-                        placeholder="john@doe.com"
-                        onChange={this.handleInputChange}
-                    />
-                    <span className="help-block">{validation.email.message}</span>
-                    </div>
-
-                    <div className={validation.phone.isInvalid && 'has-error'}>
-                    <label htmlFor="phone">Phone</label>
-                    <input type="phone" className="form-control"
-                        name="phone"
-                        placeholder="(xxx)xxx-xxxx"
-                        onChange={this.handleInputChange}
-                    />
-                    <span className="help-block">{validation.phone.message}</span>
-                    </div>
-
-                    <div className={validation.password.isInvalid && 'has-error'}>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" className="form-control"
-                        name="password"
-                        onChange={this.handleInputChange}
-                    />
-                    <span className="help-block">{validation.password.message}</span>
-                    </div>
-
-                    <div className={validation.password_confirmation.isInvalid && 'has-error'}>
-                    <label htmlFor="password_confirmation">Password Again</label>
-                    <input type="password" className="form-control"
-                        name="password_confirmation"
-                        onChange={this.handleInputChange}
-                    />
-                    <span className="help-block">{validation.password_confirmation.message}</span>
-                    </div>
-
-                    <button onClick={this.handleFormSubmit} className="btn btn-primary">
-                    Sign up
+    render(){   
+        let form = <form onSubmit={this.handleFormSubmit}>
+                    <Input inputtype='input' type="text" name='name' label="Your Name" required={true} changed={(event)=>{this.handleInputChange(event,'name')}} value={this.state.name}></Input>
+                    <Input inputtype='input' type="email" name='email' label="Email" required={true} changed={(event)=>{this.handleInputChange(event,'email')}}  value={this.state.email}></Input>
+                    <Input inputtype='input' type="password" name='password' label="Password" required={true} changed={(event)=>{this.handleInputChange(event,'password')}}  value={this.state.password}></Input>
+                    <Input inputtype='input' type="password" name='confirmation' label="Password Confirmation" required={true} changed={(event)=>{this.handleInputChange(event,'confirmation')}}  value={this.state.confirmation}></Input>
+                    <button 
+                        className={styles.SignUp} 
+                        disabled={!this.state.signUpFormValid}>
+                        Sign Up
                     </button>
                 </form>
-                <form onSubmit={this.orderHandler}>
-                    <Input inputtype='input' type="text" name='name' label="Your Name" required={true} changed={(event)=>{this.changedHandler(event,'name')}} value={this.state.name}></Input>
-                    <Input inputtype='input' type="email" name='email' label="Email" required={true} changed={(event)=>{this.changedHandler(event,'email')}}  value={this.state.email}></Input>
-                    <Input inputtype='input' type="text" name='street' label='Street' required={true} changed={(event)=>{this.changedHandler(event,'street')}}   value={this.state.street}></Input>
-                    <Input inputtype='input' type="text" name='zip' label='Zip Code' required={true} changed={(event)=>{this.changedHandler(event,'zip')}} value={this.state.zip}></Input>
-                    <Input 
-                        inputtype='select' 
-                        name='deliveryMethod' 
-                        label='Delivery Method' 
-                        options={[{value:'fastest', displayValue:'Fastest'},{value:'cheapest', displayValue:'Cheapest'}]}
-                        changed={(event)=>{this.changedHandler(event,'deliveryMethod')}}
-                        value={this.state.deliveryMethod}></Input>
-                    <Button btnType="Success">Order</Button>
+        if(!this.state.isSignup){  //sign in mode
+            form = <form onSubmit={this.handleFormSubmit}>
+                    <Input inputtype='input' type="email" name='email' label="Email" required={true} changed={(event)=>{this.handleInputChange(event,'email')}}  value={this.state.email}></Input>
+                    <Input inputtype='input' type="password" name='password' label="Password" required={true} changed={(event)=>{this.handleInputChange(event,'password')}}  value={this.state.password}></Input>
+                    <button 
+                        className={styles.SignUp} 
+                        disabled={!this.state.signInFormValid}>
+                        Sign In
+                    </button>
                 </form>
-            </div>
+        }
+        let signupClasses = []
+        if(this.state.isSignup){
+            signupClasses = [styles.SwitchButton, styles.SwitchSignup,styles.SwitchActive]
+        }
+        else{
+            signupClasses = [styles.SwitchButton, styles.SwitchSignup]
+        }
+
+        let signinClasses = []
+        if(this.state.isSignis){
+            signinClasses = [styles.SwitchButton, styles.SwitchSignin,styles.SwitchActive]
+        }
+        else{
+            signinClasses = [styles.SwitchButton, styles.SwitchSignin]
+        }
+
+        return (             
+            <React.Fragment>  
+                <div className={styles.Switch}>
+                    <button 
+                        onClick={this.switchSignup}
+                        className={signupClasses.join(' ')}>
+                        Sign Up
+                    </button >
+                    <button 
+                        onClick={this.switchSignin}
+                        className={signinClasses.join(' ')}>
+                        Sign In
+                    </button>
+                </div>    
+                <div className={styles.ContactData}>                
+                    <FormErrors formErrors={this.state.formErrors} />
+                    {form}
+                </div>
+            </React.Fragment>    
         )
     }
 }
-
-export default Auth
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        onSignIn :(email,password)=> dispatch(actions.authSignIn(email,password)),
+        onSignUp :(email,password)=> dispatch(actions.auth(email,password)),
+    }
+}
+export default connect(null,mapDispatchToProps)(Auth)

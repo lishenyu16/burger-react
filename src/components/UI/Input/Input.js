@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './Input.module.css'
-import { POINT_CONVERSION_COMPRESSED } from 'constants';
 const input = (props)=>{
     let inputElement=null
     switch(props.inputtype){
