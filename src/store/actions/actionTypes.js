@@ -18,3 +18,5 @@ export const fetchOrders = 'fetchOrders'
 export const auth_start = 'auth_start'
 export const auth_success = 'auth_success'
 export const auth_fail = 'auth_fail'
+
+export const logout = 'logout'

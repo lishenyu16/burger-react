@@ -21,6 +21,12 @@ export const authFail = (error)=>{
     }
 }
 
+export const logout = ()=>{
+    return {
+        type: actionTypes.logout
+    }
+}
+
 //sign up
 export const auth = (email,password)=>{
     const authData = {

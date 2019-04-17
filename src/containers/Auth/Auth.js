@@ -140,7 +140,7 @@ class Auth extends Component {
         }
 
         let signinClasses = []
-        if(this.state.isSignis){
+        if(this.state.isSignin){
             signinClasses = [styles.SwitchButton, styles.SwitchSignin,styles.SwitchActive]
         }
         else{

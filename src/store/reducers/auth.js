@@ -4,7 +4,8 @@ const initialState = {
     token:null,
     userId:null,
     error:null,
-    loading:false
+    loading:false,
+    isLoggedIn:false
 }
 
 const reducer =(state=initialState,action)=>{
@@ -21,11 +22,22 @@ const reducer =(state=initialState,action)=>{
                 loading: false
             }
         case(actionTypes.auth_success):
+            localStorage.setItem('userId',action.authData.localId)
+            localStorage.setItem('token',action.authData.idToken)
             return {
                 ...state,
                 userId:action.authData.localId,
                 token:action.authData.idToken,
-                loading: false
+                loading: false,
+                isLoggedIn: true
+            }
+        case(actionTypes.logout):
+            return {
+                ...state,
+                userId:null,
+                token:null,
+                loading: false,
+                isLoggedIn: false
             }
         default:
             return state

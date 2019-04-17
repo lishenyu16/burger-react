@@ -21,10 +21,10 @@ export const startingPurchase = ()=>{
     }
 }
 //async
-export const purchaseStart = (orderData)=>{
+export const purchaseStart = (orderData,token)=>{
     return (dispatch)=>{
         dispatch(startingPurchase())
-        axios.post('/orders.json',orderData)
+        axios.post('/orders.json?auth='+token,orderData)
             .then(res=>{
                 dispatch(purchaseOK(res.data,orderData))
 
@@ -49,9 +49,9 @@ export const  fetchOrders= (orders)=>{
         orders
     }
 }
-export const fetchOrderInit = ()=>{
+export const fetchOrderInit = (token)=>{
     return dispatch=>{
-        axios.get('https://aburgerbuilder.firebaseio.com/orders.json')
+        axios.get('/orders.json?auth='+ token)
         .then(res=>{
             const fetchedOrders =[]
             for(let key in res.data){

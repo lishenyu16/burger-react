@@ -8,7 +8,7 @@ class Orders extends Component{
         loading: true
     }
     componentDidMount(){      
-        this.props.onInitOrdersHandler()
+        this.props.onInitOrdersHandler(this.props.token)
     }
     render(){
         let orders=[]
@@ -23,13 +23,14 @@ class Orders extends Component{
 
 const mapStateToProps = (state)=>{
     return {
-        orders: state.order.orders
+        orders: state.order.orders,
+        token: state.auth.token
     }
 }
 
 const mapDispatchToProps = (dispatch)=>{
     return {
-        onInitOrdersHandler: ()=>dispatch(actions.fetchOrderInit())
+        onInitOrdersHandler: (token)=>dispatch(actions.fetchOrderInit(token))
     }
 }
 

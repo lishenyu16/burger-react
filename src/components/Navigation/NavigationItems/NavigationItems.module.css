@@ -3,10 +3,24 @@
     padding:0;
     list-style: none;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     height:100%;
     /* justify-content: center; */
+}
+.NavigationItems button{
+    margin:10px 0;
+    box-sizing: border-box;
+    color:rgb(68, 52, 52);
+    text-decoration: none;
+    outline: none;
+    border:none;
+    background-color: transparent;
+    font:inherit;
+}
+.NavigationItems button:hover{
+    color:rgb(54, 156, 224);
+    cursor: pointer;
 }
 
 @media(min-width:500px){

@@ -29,7 +29,7 @@ class ContactData extends Component{
                 deliveryMethod: this.state.deliveryMethod
             }
         }
-        this.props.onOrderHandler(order)
+        this.props.onOrderHandler(order,this.props.token)
     }
     changedHandler=(event,inputId)=>{
         //another way: deep copy of the state, then replace state as a whole object.
@@ -82,12 +82,13 @@ const mapStateToProps = (state)=>{
     return {
         ings:state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token
     }
 }
 const mapDispatchtoProps = (dispatch)=>{
     return {
-        onOrderHandler: (orderData)=>dispatch(actions.purchaseStart(orderData))
+        onOrderHandler: (orderData,token)=>dispatch(actions.purchaseStart(orderData,token))
     }
 }
 
