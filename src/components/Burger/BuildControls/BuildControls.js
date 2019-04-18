@@ -12,6 +12,7 @@ const controls = [
 
 
 const buildControl = (props)=>{
+
     return (
         <div className={styles.BuildControls}>
             <p>Burger Price: <b>{props.price.toFixed('2')}</b></p>

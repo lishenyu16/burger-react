@@ -27,7 +27,8 @@ class ContactData extends Component{
                 zip:this.state.zip,  
                 email:this.state.email,
                 deliveryMethod: this.state.deliveryMethod
-            }
+            },
+            userId: this.props.userId
         }
         this.props.onOrderHandler(order,this.props.token)
     }
@@ -83,7 +84,8 @@ const mapStateToProps = (state)=>{
         ings:state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 const mapDispatchtoProps = (dispatch)=>{

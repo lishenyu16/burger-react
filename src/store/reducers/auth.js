@@ -22,8 +22,6 @@ const reducer =(state=initialState,action)=>{
                 loading: false
             }
         case(actionTypes.auth_success):
-            localStorage.setItem('userId',action.authData.localId)
-            localStorage.setItem('token',action.authData.idToken)
             return {
                 ...state,
                 userId:action.authData.localId,
@@ -39,6 +37,35 @@ const reducer =(state=initialState,action)=>{
                 loading: false,
                 isLoggedIn: false
             }
+        case(actionTypes.checkAuthState):
+            const expirationDate = localStorage.getItem('expirationDate')
+            const currentDate = new Date()
+            if(localStorage.getItem('token')){
+                if(currentDate>=expirationDate){
+                    localStorage.removeItem('userId')
+                    localStorage.removeItem('token')
+                    localStorage.removeItem('expirationDate')
+                    return { //expired: 
+                        ...state,
+                        userId:null,
+                        token:null,
+                        loading: false,
+                        isLoggedIn: false
+                    }
+                }else{
+                    return {
+                        ...state,
+                        token:localStorage.getItem('token'),
+                        userId:localStorage.getItem('userId'),
+                        loading:false,
+                        isLoggedIn:true
+                    }
+                }
+            }
+            else{
+                return state
+            }
+
         default:
             return state
     }

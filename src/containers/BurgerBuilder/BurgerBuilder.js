@@ -16,7 +16,13 @@ class BurgerBuilder extends Component {
   }
 
   purchasingHandler=()=>{
-    this.setState({purchasing:true})
+    if(this.props.isLoggedIn){
+      this.setState({purchasing:true})
+    }
+    else{
+      this.props.history.push('/auth')
+    }
+    
   }
   purchasingCancelHandler=()=>{
     this.setState({purchasing:false})
@@ -38,6 +44,7 @@ class BurgerBuilder extends Component {
   
   componentDidMount(){
     this.props.initIngredientsHandler()
+    this.props.checkAuthState()
   }
 
   render() {   
@@ -55,6 +62,7 @@ class BurgerBuilder extends Component {
         <React.Fragment>
           <Burger ingredients={this.props.ings} />
           <BuildControls 
+            isLoggedIn={this.props.isLoggedIn}
             clickPurchase={this.purchasingHandler}
             price={this.props.price}
             disabled = {disabledInfo}
@@ -87,14 +95,16 @@ const mapDispatchToProps=(dispatch)=>{
       addIngredientHandler: (name)=> dispatch(actions.addIngredient(name)),
       removeIngredientHandler: (name)=> dispatch(actions.removeIngredient(name)),
       initIngredientsHandler: ()=> dispatch(actions.initIngredients()) ,
-      onPurchaseInit: ()=>dispatch(actions.purchaseInit())
+      onPurchaseInit: ()=>dispatch(actions.purchaseInit()),
+      checkAuthState: ()=>dispatch(actions.checkAuthState())
     }
 }
 
 const mapStateToProps=(state)=>{
     return {
       ings: state.burgerBuilder.ingredients,
-      price: state.burgerBuilder.totalPrice
+      price: state.burgerBuilder.totalPrice,
+      isLoggedIn: state.auth.isLoggedIn
     }
 }
 

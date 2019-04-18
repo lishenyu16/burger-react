@@ -3,7 +3,6 @@ import NavItem from './NavItem'
 import styles from './NavigationItems.module.css'
 import {connect} from 'react-redux'
 import * as actions from '../../../store/actions/index'
-import Logout from '../../../containers/Auth/Logout'
 
 class NavigationItems extends Component{
 

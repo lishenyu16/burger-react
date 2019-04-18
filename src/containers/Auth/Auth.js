@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Redirect} from 'react-router-dom'
 import Input from '../../components/UI/Input/Input'
 import isEmail from 'validator/lib/isEmail';
 import styles from './Auth.module.css'
@@ -24,6 +25,7 @@ class Auth extends Component {
         isSignup: true,
         isSignin: false,
     }
+
     handleInputChange = (event,target) => { 
         this.setState(
             {
@@ -147,9 +149,20 @@ class Auth extends Component {
             signinClasses = [styles.SwitchButton, styles.SwitchSignin]
         }
 
+        let redirect = null
+        if(this.props.isLoggedIn){
+            if(this.props.buildingBurger){
+                redirect=<Redirect to="/checkout" />
+            }else{
+                redirect=<Redirect to="/" />
+            }
+            
+        }
+
         return (             
             <React.Fragment>  
                 <div className={styles.Switch}>
+                    {redirect}
                     <button 
                         onClick={this.switchSignup}
                         className={signupClasses.join(' ')}>
@@ -175,7 +188,9 @@ const mapStateToProps = (state)=>{
         loading: state.auth.loading,
         token: state.auth.token,
         userId: state.auth.userId,
-        error: state.auth.error
+        error: state.auth.error,
+        isLoggedIn: state.auth.isLoggedIn,
+        buildingBurger: state.burgerBuilder.buildingBurger
     }
 }
 const mapDispatchToProps = (dispatch)=>{

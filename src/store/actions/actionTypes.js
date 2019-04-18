@@ -20,3 +20,5 @@ export const auth_success = 'auth_success'
 export const auth_fail = 'auth_fail'
 
 export const logout = 'logout'
+
+export const checkAuthState = 'checkAuthState'

@@ -22,6 +22,9 @@ export const authFail = (error)=>{
 }
 
 export const logout = ()=>{
+    localStorage.removeItem('userId')
+    localStorage.removeItem('token')
+    localStorage.removeItem('expirationDate')
     return {
         type: actionTypes.logout
     }
@@ -52,15 +55,23 @@ export const authSignIn = (email,password)=>{
         password,
         returnSecureToken: true
     }
-    return dispatch=>{
+    return (dispatch)=>{
         dispatch(authStart())
         Axios.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyAIOOYgeJMUiRLB9RNp5PfDY87H_rkUlbk',authData)
             .then(res=>{
-                console.log(res)
+                localStorage.setItem('userId',res.data.localId)
+                localStorage.setItem('token',res.data.idToken)
+                localStorage.setItem('expirationDate',new Date(new Date().getTime() + res.data.expiresIn*1000))
                 dispatch(authSuccess(res.data))
             })
             .catch(err=>{
                 dispatch(authFail(err))
             })
+    }
+}
+
+export const checkAuthState = ()=>{
+    return {
+        type: actionTypes.checkAuthState
     }
 }
