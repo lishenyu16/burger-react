@@ -1,14 +1,14 @@
 {
-  "main.css": "/burger-react/static/css/main.5b1a3d9b.chunk.css",
-  "main.js": "/burger-react/static/js/main.8dde18c2.chunk.js",
-  "main.js.map": "/burger-react/static/js/main.8dde18c2.chunk.js.map",
+  "main.css": "/burger-react/static/css/main.1a4fbe9d.chunk.css",
+  "main.js": "/burger-react/static/js/main.91a2ff99.chunk.js",
+  "main.js.map": "/burger-react/static/js/main.91a2ff99.chunk.js.map",
   "runtime~main.js": "/burger-react/static/js/runtime~main.ebdee34b.js",
   "runtime~main.js.map": "/burger-react/static/js/runtime~main.ebdee34b.js.map",
   "static/js/2.4c9c80ca.chunk.js": "/burger-react/static/js/2.4c9c80ca.chunk.js",
   "static/js/2.4c9c80ca.chunk.js.map": "/burger-react/static/js/2.4c9c80ca.chunk.js.map",
   "index.html": "/burger-react/index.html",
-  "precache-manifest.3f034c45e6af40c7acc93e458df75b7f.js": "/burger-react/precache-manifest.3f034c45e6af40c7acc93e458df75b7f.js",
+  "precache-manifest.a3516017391c279e4fbca2fe813a7223.js": "/burger-react/precache-manifest.a3516017391c279e4fbca2fe813a7223.js",
   "service-worker.js": "/burger-react/service-worker.js",
-  "static/css/main.5b1a3d9b.chunk.css.map": "/burger-react/static/css/main.5b1a3d9b.chunk.css.map",
+  "static/css/main.1a4fbe9d.chunk.css.map": "/burger-react/static/css/main.1a4fbe9d.chunk.css.map",
   "static/media/burger-logo.png": "/burger-react/static/media/burger-logo.b8503d26.png"
 }
