@@ -13,11 +13,8 @@ const sideDrawer = (props)=>{
     return (
         <React.Fragment>
             <Backdrop show={props.show} clickBackdrop={props.sideDrawerClicked}></Backdrop>
-            <div className={attachedClasses.join(' ')}>
+            <div className={attachedClasses.join(' ')} onClick={props.sideDrawerClicked}>
                 <Logo height='11%' />
-                {/* <div style={{height:'11%'}}>
-                    <Logo></Logo>
-                </div> */}
                 <nav>
                     <NavigationItems></NavigationItems>
                 </nav>

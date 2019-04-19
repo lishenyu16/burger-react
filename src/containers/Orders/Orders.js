@@ -2,13 +2,12 @@ import React, { Component } from 'react'
 import Order from '../../components/Order/Order'
 import {connect} from 'react-redux'
 import * as actions from '../../store/actions/index'
-import Spinner from '../../components/UI/Spinner/Spinner'
 class Orders extends Component{
     state={
         loading: true
     }
     componentDidMount(){      
-        this.props.onInitOrdersHandler(this.props.token)
+        this.props.onInitOrdersHandler(this.props.userId, this.props.token)
     }
     render(){
         let orders=[]
@@ -24,13 +23,14 @@ class Orders extends Component{
 const mapStateToProps = (state)=>{
     return {
         orders: state.order.orders,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     }
 }
 
 const mapDispatchToProps = (dispatch)=>{
     return {
-        onInitOrdersHandler: (token)=>dispatch(actions.fetchOrderInit(token))
+        onInitOrdersHandler: (userId,token)=>dispatch(actions.fetchOrderInit(userId,token))
     }
 }
 

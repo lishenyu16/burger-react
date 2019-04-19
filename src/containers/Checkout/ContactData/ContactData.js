@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Button from '../../../components/UI/Button'
 import styles from './ContactData.module.css'
-import axios from 'axios'
-import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import {connect} from 'react-redux'
 import * as actions from '../../../store/actions/index'

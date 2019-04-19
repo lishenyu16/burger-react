@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import CheckoutSummary from '../../components/Order/Checkout/CheckoutSummary'
-import {Route} from 'react-router-dom'
+import {Route,Redirect} from 'react-router-dom'
 import ContactData from '../Checkout/ContactData/ContactData'
 import { connect} from 'react-redux'
 import Spinner from '../../components/UI/Spinner/Spinner'
@@ -9,6 +9,11 @@ class Checkout extends Component{
 
     // componentWillMount(){
     //     this.props.onPurchaseInit()
+    // }
+    // componentDidMount(){
+    //     if(this.props.purchased){
+    //         this.props.history.replace('/')
+    //     }
     // }
 
     checkoutCancelledHandler=()=>{
@@ -20,9 +25,7 @@ class Checkout extends Component{
     }
     render(){
         let burger = <Spinner />;
-        if(this.props.purchased){
-            this.props.history.replace('/')
-        }
+        let redirect = null
         if(this.props.ings){
             burger = <CheckoutSummary 
                         checkoutCancelled={this.checkoutCancelledHandler}
@@ -30,8 +33,13 @@ class Checkout extends Component{
                         ingredients={this.props.ings}>
                     </CheckoutSummary>
         }
+        if(this.props.purchased){
+            redirect = <Redirect to="/" />
+            //this.props.history.replace('/')
+        }
         return(
             <div>
+                {redirect}
                 {burger}
                 <Route 
                     path={this.props.match.path + '/contact-data'} 
