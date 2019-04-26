@@ -1,26 +1,24 @@
-import React, { Component } from 'react'
+import React from 'react'
 import NavItem from './NavItem'
 import styles from './NavigationItems.module.css'
 import {connect} from 'react-redux'
 import * as actions from '../../../store/actions/index'
 
-class NavigationItems extends Component{
+const navigationItems = (props)=>{
 
-    render(){
-        let authMethod = <NavItem link="/auth">Sign In</NavItem>
-        let ordersLink = null
-        if(this.props.isLoggedIn){
-            ordersLink = <NavItem link="/orders">Orders</NavItem>
-            authMethod = <NavItem link="/logout">Logout</NavItem> // <button onClick={this.props.onLogout}>Logout</button>
-        }
-        return (
-            <ul className={styles.NavigationItems}>
-                <NavItem link="/">Burger Builder</NavItem>
-                {ordersLink}
-                {authMethod}
-            </ul>
-        )
+    let authMethod = <NavItem link="/auth">Sign In</NavItem>
+    let ordersLink = null
+    if(props.isLoggedIn){
+        ordersLink = <NavItem link="/orders">Orders</NavItem>
+        authMethod = <NavItem link="/logout">Logout</NavItem> // <button onClick={this.props.onLogout}>Logout</button>
     }
+    return (
+        <ul className={styles.NavigationItems}>
+            <NavItem link="/">Burger Builder</NavItem>
+            {ordersLink}
+            {authMethod}
+        </ul>
+    )
 }
 
 const mapStateToProps = (state)=>{
@@ -33,14 +31,4 @@ const mapDispatchToProps = (dispatch)=>{
         onLogout:()=> dispatch(actions.logout())
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(NavigationItems)
-
-// const navigationItems = (props)=>(
-//     <ul className={styles.NavigationItems}>
-//         <NavItem link="/">Burger Builder</NavItem>
-//         <NavItem link="/orders">Orders</NavItem>
-//         <NavItem link="/auth">Sign In</NavItem>
-//     </ul>
-// )
-
-// export default navigationItems
+export default connect(mapStateToProps,mapDispatchToProps)(navigationItems)

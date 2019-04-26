@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Layout from './components/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 import Checkout from './containers/Checkout/Checkout'
@@ -8,9 +8,8 @@ import {Route, Switch, Redirect} from 'react-router-dom'
 import Auth from './containers/Auth/Auth'
 import {connect} from 'react-redux'
 
-class App extends Component {
-  render() {
 
+const app = (props)=> {
     let routes = (
       <Switch>
         <Route path="/" exact component={BurgerBuilder}></Route>
@@ -18,7 +17,7 @@ class App extends Component {
         <Redirect to='/' />
       </Switch>
     )
-    if(this.props.isAuthenticated){
+    if(props.isAuthenticated){
       routes = (
         <Switch>
           <Route path="/checkout" component={Checkout}></Route>
@@ -37,7 +36,7 @@ class App extends Component {
         </Layout>
       </div>
     );
-  }
+
 }
 
  const mapStateToProps = state=>{
@@ -45,4 +44,4 @@ class App extends Component {
      isAuthenticated: state.auth.isLoggedIn
    }
  }
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(app)
